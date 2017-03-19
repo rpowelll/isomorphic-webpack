@@ -17,7 +17,9 @@
     "enhanced-resolve": "^3.0.2",
     "flow-runtime": "0.0.3",
     "jsdom": "^9.8.3",
+    "lodash": "^4.17.4",
     "memory-fs": "^0.4.1",
+    "node-style-loader": "0.0.1-alpha",
     "source-map": "^0.5.6",
     "webpack-merge": "^2.1.0",
     "webpack-node-externals": "^1.5.4"

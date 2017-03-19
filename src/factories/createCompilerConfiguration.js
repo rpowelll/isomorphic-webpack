@@ -6,9 +6,29 @@ import {
 } from 'webpack';
 import nodeExternals from 'webpack-node-externals';
 import webpackMerge from 'webpack-merge';
+import _ from 'lodash';
+
+const replaceLoaders = (loaders) => {
+  if (!_.isPlainObject(loaders)) {
+    return loaders;
+  }
+
+  return _.mapValues(loaders, (value) => {
+    if (_.isString(value) && value === 'style-loader') {
+      return 'node-style-loader';
+    } else if (_.isPlainObject(value)) {
+      return replaceLoaders(value);
+    } else if (_.isArray(value)) {
+      return value.map(replaceLoaders);
+    } else {
+      return value;
+    }
+  });
+};
 
 export default (webpackConfiguration: Object, nodeExternalsWhitelist: Array<string | RegExp> = []): Object => {
   const manifestPath = path.resolve(webpackConfiguration.context, 'manifest.json');
+  const module = replaceLoaders(webpackConfiguration.module);
 
   const compilerConfiguration = webpackMerge(webpackConfiguration, {
     devtool: 'hidden-source-map',
@@ -33,6 +53,7 @@ export default (webpackConfiguration: Object, nodeExternalsWhitelist: Array<stri
       //   callback();
       // }
     ],
+    module,
     node: {
       // eslint-disable-next-line id-match
       __dirname: false,
