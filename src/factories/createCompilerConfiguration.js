@@ -33,6 +33,17 @@ export default (webpackConfiguration: Object, nodeExternalsWhitelist: Array<stri
       //   callback();
       // }
     ],
+    node: {
+      // eslint-disable-next-line id-match
+      __dirname: false,
+      // eslint-disable-next-line id-match
+      __filename: false,
+      Buffer: false,
+      console: false,
+      global: false,
+      process: false,
+      setImmediate: false
+    },
     plugins: [
       new DllPlugin({
         path: manifestPath
